@@ -8,6 +8,7 @@ class TrelloCloneApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Hello World");
 	}
 
 }
