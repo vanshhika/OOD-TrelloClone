@@ -1,11 +1,9 @@
-package com.OOD.TrelloClone.controller;
+package com.OOD.TrelloClone.services;
 
 import com.OOD.TrelloClone.model.UserEntity;
 import com.OOD.TrelloClone.repository.UserEntityRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
