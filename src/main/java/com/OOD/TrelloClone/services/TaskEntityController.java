@@ -1,4 +1,4 @@
-package com.OOD.TrelloClone.controller;
+package com.OOD.TrelloClone.services;
 
 import com.OOD.TrelloClone.model.TaskEntity;
 import com.OOD.TrelloClone.model.TaskState;
@@ -88,8 +88,8 @@ public class TaskEntityController {
         return ResponseEntity.ok("Task deleted successfully");
     }
 
-    @GetMapping("/displayTasks")
-    public ResponseEntity<List<TaskEntity>> showBoard() {
+    @GetMapping("/getAllTasks")
+    public ResponseEntity<List<TaskEntity>> getAllTasks() {
         List<TaskEntity> tasks = taskEntityRepository.findAll();
         return ResponseEntity.ok(tasks);
     }
