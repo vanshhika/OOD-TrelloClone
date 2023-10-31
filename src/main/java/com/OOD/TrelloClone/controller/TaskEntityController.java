@@ -1,4 +1,4 @@
-package com.OOD.TrelloClone.services;
+package com.OOD.TrelloClone.controller;
 
 import com.OOD.TrelloClone.model.TaskEntity;
 import com.OOD.TrelloClone.model.TaskState;
