@@ -15,9 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ModifyTask {
     @NotNull
-    long taskId;
+    Long taskId;
     String taskName;
-    long assignedTo;
+    List<Long> assignedTo;
     String description;
     List<String> comments;
     String stringstate;

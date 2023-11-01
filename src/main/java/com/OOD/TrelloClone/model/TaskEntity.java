@@ -2,7 +2,6 @@ package com.OOD.TrelloClone.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -69,11 +68,11 @@ public class TaskEntity {
         this.state = state;
     }
 
-    public UserEntity getAssignedTo() {
+    public List<UserEntity> getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(UserEntity assignedTo) {
+    public void setAssignedTo(List<UserEntity> assignedTo) {
         this.assignedTo = assignedTo;
     }
 
@@ -97,8 +96,11 @@ public class TaskEntity {
     private String doingTime;
     @Enumerated(EnumType.STRING)
     private TaskState state;
-    @ManyToOne
-    private UserEntity assignedTo;
+    //@ManyToOne
+    //private UserEntity assignedTo;
+    @ManyToMany
+    @ElementCollection
+    private List<UserEntity> assignedTo;
     @ElementCollection
     private List<String> comments;
 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +41,18 @@ public class TaskServiceImpl implements TaskServices{
         task.setTodoTime(gettime()); // You can implement this method
         task.setTaskName(createTask.getTaskName());
         task.setComments(createTask.getComments());
-        UserEntity user = userEntityRepository.findById(createTask.getAssignedTo()).orElse(null);
-        if(createTask.getAssignedTo()!=0 && user==null){
-            return "Please enter a USer to do the task";
+        List<UserEntity> users = new ArrayList<>();
+        for(Long id : createTask.getAssignedTo()) {
+            UserEntity user = userEntityRepository.findById(id).orElse(null);
+            if(id!=0 && user==null){
+                return "Please enter a USer to do the task";
+            }
+            if (user == null) {
+                return "The User does not exist!! Try again!!";
+            }
+            users.add(user);
         }
-        if (user == null) {
-            return "The User does not exist!! Try again!!";
-        }
-        task.setAssignedTo(user);
+        task.setAssignedTo(users);
         taskEntityRepository.save(task);
         return "Task Created Successfully";
     }
@@ -61,13 +67,17 @@ public class TaskServiceImpl implements TaskServices{
             task.setTaskName(modifytask.getTaskName());
         }
 
-        if (modifytask.getAssignedTo()!=0) {
-            UserEntity user = userEntityRepository.findById(modifytask.getAssignedTo()).orElse(null);
-            if (user == null) {
-                return "User not found";
+        List<UserEntity> users = new ArrayList<>();
+        for(long id : modifytask.getAssignedTo()) {
+            if (id != 0) {
+                UserEntity user = userEntityRepository.findById(id).orElse(null);
+                if (user == null) {
+                    return "User not found";
+                }
+                users.add(user);
             }
-            task.setAssignedTo(user);
         }
+        task.setAssignedTo(users);
 
         if (modifytask.getDescription() != null) {
             task.setDescription(modifytask.getDescription());

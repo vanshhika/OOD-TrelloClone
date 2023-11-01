@@ -14,7 +14,7 @@ import java.util.List;
 public class CreateTask {
     @NotNull
     String taskName;
-    long assignedTo;
+    List<Long> assignedTo;
     String description;
     List<String> comments;
 }
