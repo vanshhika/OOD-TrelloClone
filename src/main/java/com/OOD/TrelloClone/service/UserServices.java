@@ -7,6 +7,6 @@ import java.util.List;
 public interface UserServices {
     UserEntity addUser(UserEntity userEntity);
 
-    UserEntity getUser(long userID);
+    UserEntity getUser(Long userID);
 
 }

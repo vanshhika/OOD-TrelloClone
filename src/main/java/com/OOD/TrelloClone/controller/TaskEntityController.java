@@ -29,7 +29,10 @@ public class TaskEntityController {
     public ResponseEntity<String> createTask(@RequestBody CreateTask task) {
         return ResponseEntity.ok().body(taskServices.addTask(task));
     }
-
+    @GetMapping("/getTask/{taskId}")
+    public ResponseEntity<TaskEntity> getTask(@PathVariable Long taskId){
+        return ResponseEntity.ok().body((taskEntityRepository.findTaskEntityByTaskID(taskId)));
+    }
     @PutMapping("/modifyTask")
     public ResponseEntity<String> modifyTask(@RequestBody ModifyTask modifyTask) {
         return ResponseEntity.ok().body(taskServices.updateTask(modifyTask));
@@ -44,5 +47,13 @@ public class TaskEntityController {
     public ResponseEntity<List<TaskEntity>> getAllTasks() {
         List<TaskEntity> tasks = taskEntityRepository.findAll();
         return ResponseEntity.ok(tasks);
+    }
+    @GetMapping("/timeToDoing/{taskId}")
+    public ResponseEntity<String> timeToDoing(@PathVariable long taskId){
+        return ResponseEntity.ok().body(taskServices.TimeToDoing(taskId));
+    }
+    @GetMapping("/timeToDone/{taskId}")
+    public ResponseEntity<String> timeToDone(@PathVariable long taskId){
+        return ResponseEntity.ok().body(taskServices.TimeToDone(taskId));
     }
 }

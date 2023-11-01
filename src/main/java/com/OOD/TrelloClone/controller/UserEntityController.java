@@ -27,8 +27,8 @@ public class UserEntityController {
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity userEntity) {
         return ResponseEntity.ok().body(userServices.addUser(userEntity));
     }
-    @GetMapping("/getUserById")
-    public ResponseEntity<UserEntity> getUserById(@RequestParam long userId){
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Long userId){
         return ResponseEntity.ok().body(userServices.getUser(userId));
     }
 

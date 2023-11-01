@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -88,7 +89,43 @@ public class TaskServiceImpl implements TaskServices{
         }
 
         taskEntityRepository.save(task);
-        return "Task modified successfully" +gettime() +"AAAAAAAaa";
+        return "Task modified successfully" +gettime();
+    }
+    @Override
+    public String TimeToDoing(long TaskId){
+        TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(TaskId);
+        if (task == null) {
+            return "Task with ID "+TaskId+ " not found";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime todoTime = LocalDateTime.parse(task.getTodoTime(), formatter);
+        LocalDateTime doingTime = LocalDateTime.parse(task.getDoingTime(), formatter);
+
+        // Calculate the duration between the two timestamps
+        Duration duration = Duration.between(todoTime, doingTime);
+        long hours = duration.toHours();
+        long minutes = duration.toMinutesPart();
+
+        String formattedDuration = hours + " hours " + minutes + " minutes";
+        return "Time Taken for the task to move to DOING state is "+formattedDuration;
+    }
+    @Override
+    public String TimeToDone(long TaskId){
+        TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(TaskId);
+        if (task == null) {
+            return "Task with ID "+TaskId+ " not found";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime todoTime = LocalDateTime.parse(task.getTodoTime(), formatter);
+        LocalDateTime doneTime = LocalDateTime.parse(task.getDoneTime(), formatter);
+
+        // Calculate the duration between the two timestamps
+        Duration duration = Duration.between(todoTime, doneTime);
+        long hours = duration.toHours();
+        long minutes = duration.toMinutesPart();
+
+        String formattedDuration = hours + " hours " + minutes + " minutes";
+        return "Time Taken for the task to move to DONE state is "+formattedDuration;
     }
 
 }

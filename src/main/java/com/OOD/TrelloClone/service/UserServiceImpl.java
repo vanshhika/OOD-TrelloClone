@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserServices {
         return userEntityRepository.save(userDetails);
     }
     @Override
-    public UserEntity getUser(long userID) {
-        return userEntityRepository.findByUserID(userID);
+    public UserEntity getUser(Long userID) {
+        return userEntityRepository.findUserEntityByUserID(userID);
     }
 }

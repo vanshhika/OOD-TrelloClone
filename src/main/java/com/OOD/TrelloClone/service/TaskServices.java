@@ -8,4 +8,7 @@ public interface TaskServices {
     String addTask(CreateTask task);
     String updateTask(ModifyTask modifyTask);
 
+    String TimeToDoing(long TaskId);
+    String TimeToDone(long TaskId);
+
 }
