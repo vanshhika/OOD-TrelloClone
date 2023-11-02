@@ -4,8 +4,10 @@ import com.OOD.TrelloClone.model.RequestArgs.CreateTask;
 import com.OOD.TrelloClone.model.RequestArgs.ModifyTask;
 import com.OOD.TrelloClone.model.TaskEntity;
 import com.OOD.TrelloClone.model.TaskState;
+import com.OOD.TrelloClone.model.TaskUsersEntity;
 import com.OOD.TrelloClone.model.UserEntity;
 import com.OOD.TrelloClone.repository.TaskEntityRepository;
+import com.OOD.TrelloClone.repository.TaskUserEntityRepository;
 import com.OOD.TrelloClone.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.List;
 public class TaskServiceImpl implements TaskServices{
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
+    private final TaskUserEntityRepository taskUsersEntityRepo;
 
     public String gettime(){
         LocalDateTime currentTime = LocalDateTime.now();
@@ -45,12 +48,16 @@ public class TaskServiceImpl implements TaskServices{
         for(Long id : createTask.getAssignedTo()) {
             UserEntity user = userEntityRepository.findById(id).orElse(null);
             if(id!=0 && user==null){
-                return "Please enter a USer to do the task";
+                return "Please enter a User to do the task";
             }
             if (user == null) {
                 return "The User does not exist!! Try again!!";
             }
             users.add(user);
+            TaskUsersEntity taskUsersEntity = new TaskUsersEntity();
+            taskUsersEntity.setTask(task);
+            taskUsersEntity.setUserDetails(user);
+            taskUsersEntityRepo.save(taskUsersEntity);
         }
         task.setAssignedTo(users);
         taskEntityRepository.save(task);
