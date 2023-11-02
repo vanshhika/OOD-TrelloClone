@@ -54,13 +54,14 @@ public class TaskServiceImpl implements TaskServices{
                 return "The User does not exist!! Try again!!";
             }
             users.add(user);
-            TaskUsersEntity taskUsersEntity = new TaskUsersEntity();
-            taskUsersEntity.setTask(task);
-            taskUsersEntity.setUserDetails(user);
-            taskUsersEntityRepo.save(taskUsersEntity);
+
         }
         task.setAssignedTo(users);
         taskEntityRepository.save(task);
+        TaskUsersEntity taskUsersEntity = new TaskUsersEntity();
+        taskUsersEntity.setTask(task);
+        taskUsersEntity.setUserDetails(users);
+        taskUsersEntityRepo.save(taskUsersEntity);
         return "Task Created Successfully";
     }
 

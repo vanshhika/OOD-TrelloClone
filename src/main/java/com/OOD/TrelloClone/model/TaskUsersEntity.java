@@ -8,6 +8,8 @@ import lombok.NonNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,9 +24,9 @@ public class TaskUsersEntity {
     @NonNull
     private TaskEntity task;
     @NonNull
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "userID")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private UserEntity userDetails;
+    private List<UserEntity> userDetails;
 }
 
