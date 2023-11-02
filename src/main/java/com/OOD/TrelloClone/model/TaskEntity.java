@@ -96,10 +96,10 @@ public class TaskEntity {
     private String doingTime;
     @Enumerated(EnumType.STRING)
     private TaskState state;
-    //@ManyToOne
-    //private UserEntity assignedTo;
     @ManyToMany
-    @ElementCollection
+    @JoinTable(name = "task_assigned_to",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> assignedTo;
     @ElementCollection
     private List<String> comments;

@@ -54,7 +54,6 @@ public class TaskServiceImpl implements TaskServices{
                 return "The User does not exist!! Try again!!";
             }
             users.add(user);
-
         }
         task.setAssignedTo(users);
         taskEntityRepository.save(task);
