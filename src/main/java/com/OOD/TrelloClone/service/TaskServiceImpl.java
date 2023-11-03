@@ -98,10 +98,16 @@ public class TaskServiceImpl implements TaskServices{
             if(modifytask.getStringstate().equalsIgnoreCase("doing")){
                 task.setState(TaskState.DOING);
                 task.setDoingTime(gettime());
+                task.setDoneTime("");
             }
             else if(modifytask.getStringstate().equalsIgnoreCase("done")){
                 task.setState(TaskState.DONE);
                 task.setDoneTime(gettime());
+            }
+            else if(modifytask.getStringstate().equalsIgnoreCase("todo")){
+                task.setState(TaskState.TODO);
+                task.setDoneTime("");
+                task.setDoingTime("");
             }
         }
 
@@ -113,6 +119,9 @@ public class TaskServiceImpl implements TaskServices{
         TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(TaskId);
         if (task == null) {
             return "Task with ID "+TaskId+ " not found";
+        }
+        if(task.getDoingTime()==""||task.getDoingTime()==null){
+            return "The task has not moved to doing state yet.";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime todoTime = LocalDateTime.parse(task.getTodoTime(), formatter);
@@ -131,6 +140,9 @@ public class TaskServiceImpl implements TaskServices{
         TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(TaskId);
         if (task == null) {
             return "Task with ID "+TaskId+ " not found";
+        }
+        if(task.getDoneTime()==""||task.getDoneTime()==null){
+            return "The task has not moved to done state yet.";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime todoTime = LocalDateTime.parse(task.getTodoTime(), formatter);
