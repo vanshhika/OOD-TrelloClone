@@ -1,28 +1,30 @@
 package com.OOD.TrelloClone.controller;
 
 import com.OOD.TrelloClone.model.UserEntity;
+import com.OOD.TrelloClone.repository.TaskEntityRepository;
 import com.OOD.TrelloClone.repository.UserEntityRepository;
+import com.OOD.TrelloClone.service.TaskServices;
 import com.OOD.TrelloClone.service.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserEntityController {
-    private final UserEntityRepository userEntityRepository;
     private final UserServices userServices;
 
-    public UserEntityController(UserEntityRepository userEntityRepository, UserServices userServices) {
-        this.userEntityRepository = userEntityRepository;
+    public UserEntityController(
+            UserServices userServices
+    ) {
         this.userServices = userServices;
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok(this.userEntityRepository.findAll());
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        return ResponseEntity.ok(userServices.getallUsers());
     }
-
-
     @PostMapping("/createUser")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity userEntity) {
         return ResponseEntity.ok().body(userServices.addUser(userEntity));
@@ -34,8 +36,10 @@ public class UserEntityController {
 
     @DeleteMapping("/deleteUser")
     public ResponseEntity<String> deleteUser(@RequestParam long userID) {
-        userEntityRepository.deleteById(userID);
-        return ResponseEntity.ok("User deleted successfully");
+        return ResponseEntity.ok().body(userServices.deleteUser(userID));
     }
-
+    @GetMapping("/enoughUsers")
+    public ResponseEntity<String> enoughUser(){
+        return ResponseEntity.ok().body(userServices.enoughUsers());
+    }
 }

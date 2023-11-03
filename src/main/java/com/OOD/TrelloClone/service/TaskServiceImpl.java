@@ -23,9 +23,23 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskServices{
+    //Singleton Pattern
+    private static TaskServiceImpl instance;
+
     private final UserEntityRepository userEntityRepository;
     private final TaskEntityRepository taskEntityRepository;
     private final TaskUserEntityRepository taskUsersEntityRepo;
+
+    public static TaskServiceImpl getInstance(UserEntityRepository userEntityRepository,
+                                              TaskEntityRepository taskEntityRepository,
+                                              TaskUserEntityRepository taskUsersEntityRepo) {
+        if (instance == null) {
+            instance = new TaskServiceImpl(userEntityRepository, taskEntityRepository, taskUsersEntityRepo);
+        }
+        return instance;
+    }
+
+
 
     public String gettime(){
         LocalDateTime currentTime = LocalDateTime.now();
@@ -155,6 +169,21 @@ public class TaskServiceImpl implements TaskServices{
 
         String formattedDuration = hours + " hours " + minutes + " minutes";
         return "Time Taken for the task to move to DONE state is "+formattedDuration;
+    }
+    @Override
+    public List<TaskEntity> getallTask(){
+        List<TaskEntity> allTask = new ArrayList<>();
+        allTask = taskEntityRepository.findAll();
+        return allTask;
+    }
+    @Override
+    public String deleteTask(Long taskID){
+        TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(taskID);
+        if(task==null)
+            return "No such task exists";
+        else
+            taskEntityRepository.deleteById(taskID);
+        return "Task Deleted Successfully";
     }
 
 }

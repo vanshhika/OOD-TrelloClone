@@ -8,5 +8,8 @@ public interface UserServices {
     UserEntity addUser(UserEntity userEntity);
 
     UserEntity getUser(Long userID);
+    List<UserEntity> getallUsers();
 
+    String enoughUsers();
+    String deleteUser(Long userID);
 }
