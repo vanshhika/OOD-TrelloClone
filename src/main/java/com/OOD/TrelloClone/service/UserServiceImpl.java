@@ -1,11 +1,13 @@
 package com.OOD.TrelloClone.service;
 
+import com.OOD.TrelloClone.model.TaskEntity;
+import com.OOD.TrelloClone.model.TaskUsersEntity;
 import com.OOD.TrelloClone.model.UserEntity;
 import com.OOD.TrelloClone.repository.TaskEntityRepository;
 import com.OOD.TrelloClone.repository.TaskUserEntityRepository;
 import com.OOD.TrelloClone.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,9 +21,14 @@ public class UserServiceImpl implements UserServices {
 
     private final UserEntityRepository userEntityRepository;
 
-    public static UserServiceImpl getInstance(UserEntityRepository userEntityRepository) {
+    private final TaskEntityRepository taskEntityRepository;
+
+    private  final  TaskUserEntityRepository taskUserEntityRepository;
+
+
+    public static UserServiceImpl getInstance(UserEntityRepository userEntityRepository,TaskEntityRepository taskEntityRepository,  TaskUserEntityRepository taskUserEntityRepository) {
         if (instance == null) {
-            instance = new UserServiceImpl(userEntityRepository);
+            instance = new UserServiceImpl(userEntityRepository ,taskEntityRepository, taskUserEntityRepository);
         }
         return instance;
     }
@@ -53,8 +60,24 @@ public class UserServiceImpl implements UserServices {
         UserEntity user = userEntityRepository.findUserEntityByUserID(userID);
         if(user==null)
             return "NO such user exists";
-        else
+        else {
+            List<TaskUsersEntity> task_user = taskUserEntityRepository.findByUserDetails(user);
+            List<TaskEntity> task = taskEntityRepository.findAll();
+            for(TaskEntity t :task){
+                List<UserEntity> getAssigned = t.getAssignedTo();
+                List<UserEntity> assigned = new ArrayList<>();
+                for(UserEntity assignedUser: getAssigned){
+                    if(assignedUser.getUserID() != userID){
+                        assigned.add(assignedUser);
+                    }
+                }
+                t.setAssignedTo(assigned);
+            }
+            for(TaskUsersEntity taskUser: task_user){
+                taskUserEntityRepository.delete(taskUser);
+            }
             userEntityRepository.deleteById(userID);
+        }
         return "User Deleted Successfully";
     }
 }

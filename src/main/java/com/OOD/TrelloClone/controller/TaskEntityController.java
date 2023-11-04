@@ -37,8 +37,8 @@ public class TaskEntityController {
         return ResponseEntity.ok().body(taskServices.updateTask(modifyTask));
     }
     @DeleteMapping("/deleteTask/{taskId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long taskID) {
-        return ResponseEntity.ok().body(taskServices.deleteTask(taskID));
+    public ResponseEntity<String> deleteUser(@PathVariable Long taskId) {
+        return ResponseEntity.ok().body(taskServices.deleteTask(taskId));
     }
 
     @GetMapping("/getAllTasks")

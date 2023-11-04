@@ -17,6 +17,7 @@ import java.util.List;
 public class TaskUsersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private long userTaskID;
     @ManyToOne
     @JoinColumn(name = "taskID")
