@@ -112,7 +112,7 @@ public class TaskServiceImpl implements TaskServices{
             if(modifytask.getStringstate().equalsIgnoreCase("doing")){
                 task.setState(TaskState.DOING);
                 task.setDoingTime(gettime());
-                task.setDoneTime("");
+                task.setDoneTime(null);
             }
             else if(modifytask.getStringstate().equalsIgnoreCase("done")){
                 task.setState(TaskState.DONE);
@@ -120,8 +120,8 @@ public class TaskServiceImpl implements TaskServices{
             }
             else if(modifytask.getStringstate().equalsIgnoreCase("todo")){
                 task.setState(TaskState.TODO);
-                task.setDoneTime("");
-                task.setDoingTime("");
+                task.setDoneTime(null);
+                task.setDoingTime(null);
             }
         }
 
@@ -166,9 +166,13 @@ public class TaskServiceImpl implements TaskServices{
         Duration duration = Duration.between(todoTime, doneTime);
         long hours = duration.toHours();
         long minutes = duration.toMinutesPart();
-
         String formattedDuration = hours + " hours " + minutes + " minutes";
-        return "Time Taken for the task to move to DONE state is "+formattedDuration;
+
+        //Set to 5 minutes to check the code and not wait for days
+        if (minutes < 5) {
+            return "Time Taken for completion "+formattedDuration +" NOT a good Sized task";
+        }
+        return "Time Taken for completion "+formattedDuration+" GOOD sized task";
     }
     @Override
     public List<TaskEntity> getallTask(){
@@ -176,6 +180,8 @@ public class TaskServiceImpl implements TaskServices{
         allTask = taskEntityRepository.findAll();
         return allTask;
     }
+
+
     @Override
     public String deleteTask(Long taskID){
         TaskEntity task = taskEntityRepository.findTaskEntityByTaskID(taskID);
